@@ -11,10 +11,14 @@
   --color-grey-button: #f5f4fa;
   --color-logo-black: #000000;
   --color-social-icon:#AFB1B8;
+  --color-backdrop:rgba(0, 0, 0, 0.2);
+  --bg-overlay:rgba(33, 150, 243, 0.9);
+  --about-overlay:rgba(47, 48, 58, 0.8);
   /* Card-set */
   --main-card-gap:30px;
   --card-item:3;
-
+  /* other */
+  --main-anim:250ms ease-in-out;
 
   /* font */
   --main-font-family: 'Roboto', sans-serif;
@@ -156,14 +160,30 @@ margin-right: 10px;
   font-weight: 500;
   line-height: calc(16 / 14);
   letter-spacing: 0.02em;
+  
+  transition: color var(--main-anim), cubic-bezier(0.4, 0, 0.2, 1) 500ms;
 }
+
 
 .link-effect:hover,
 .link-effect:focus {
   color: var(--color-main-blue);
 }
-.list .link.current {
+
+.nav-link.current {
+  position: relative;
   color: var(--color-main-blue);
+}
+.nav-link.current::after{
+  content: '';
+  left: 0;
+  bottom: 0;
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background-color: var(--color-main-blue);
 }
 
 
@@ -212,7 +232,8 @@ margin-right: 10px;
   font-family: var(--main-font-family);
   font-weight: 700;
   font-size: 16px;
-  line-height: 1.36;
+  letter-spacing: 0.06cm;
+  line-height: 1.88;
   color: var(--color-white-text);
   cursor: pointer;
 }
@@ -244,6 +265,30 @@ margin-right: 10px;
 /* -- Section About -- */
 .about{
   padding-top: 0;
+}
+
+.about-overlay{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  color: var(--color-white-text);
+  background-color: var(--about-overlay);
+  /* transform: translateY(100%);
+  transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1) ; */
+}
+/* .about-item:hover .about-overlay{
+  transform: translateY(0);
+}  */
+.about-text{
+  font-weight: 700;
+line-height: calc(16 / 14);
+text-transform: uppercase;
 }
 .section-title {
   margin-bottom: 50px;
@@ -299,6 +344,9 @@ margin-right: 10px;
 .socials-icon{
   fill:currentColor;
 }
+.socials-link{
+  transition: background-color var(--main-anim), color var(--main-anim), cubic-bezier(0.4, 0, 0.2, 1) 500ms;
+}
 .socials-link:hover,
 .socials-link:focus{
   background-color:var(--color-main-blue);
@@ -317,6 +365,8 @@ margin-right: 10px;
   border: 1px solid var(--color-social-icon);
   border-radius: 4px;
   color: var(--color-social-icon);
+
+  transition: background-color var(--main-anim), color var(--main-anim), cubic-bezier(0.4, 0, 0.2, 1) 500ms;
 }
 .client-icon{
   fill: currentColor;
@@ -356,6 +406,7 @@ margin-right: 10px;
 .footer-item .link-effect{
   padding-top: 5px;
   padding-bottom: 5px;
+  transition: color var(--main-anim), cubic-bezier(0.4, 0, 0.2, 1) 500ms;
 }
 .footer-text{
   font-weight: 700;
@@ -373,6 +424,54 @@ margin-right: 10px;
   color: var(--color-white-text);
 }
 
+/* Modal window */
+.backdrop{
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+
+  width: 100%;
+  height: 100%;
+
+  background-color: var(--color-backdrop);
+}
+.backdrop.is-hidden{
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.modal{
+  position: absolute;
+  top: 50%;
+  left: 50%; 
+  transform: translate(-50%, -50%) scaleX(1);
+  width: 530px;
+  height: 580px;
+  background: var(--color-white-text);
+box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14), 0px 2px 1px rgba(0, 0, 0, 0.2);
+border-radius: 4px;
+transition: transform 1000ms , opacity 400ms ;
+}
+.backdrop.is-hidden .modal{
+  opacity: 0.3;
+  transform: translate(-50%, -50%) scaleX(0.3);
+}
+.modal-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  top: 8px;
+  right: 8px;
+  position: absolute;
+  background-color: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  cursor: pointer;
+}
 
   /* ---------- Page Portfolio ----------*/
   
@@ -383,11 +482,13 @@ margin-right: 10px;
   font-size: 16px;
   line-height: calc(26 / 16);
   text-align: center;
-  background: var(--color-grey-button);
+  background-color: var(--color-grey-button);
   border-radius: 4px;
   cursor: pointer;
   border: none;
   padding: 6px 22px;
+ 
+  transition: background-color var(--main-anim), cubic-bezier(0.4, 0, 0.2, 1) 500ms;
 }
 .btn.current {
   background: var(--color-main-blue);
@@ -420,6 +521,33 @@ margin-right: 10px;
 .product-item {
   background: var(--color-white-text);
 }
+
+.overlay-box{
+  position: relative;
+  overflow: hidden;
+}
+.overlay{
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(100%);
+  width: 100%;
+  background-color: var(--bg-overlay);
+  color: var(--color-white-text);
+
+  transition: transform 500ms ease-in-out;
+}
+.product-item:hover .overlay{
+  transform: translateY(0);
+}
+
+.overlay-text{
+  font-weight: 400;
+font-size: 18px;
+line-height: calc(28 / 18);
+letter-spacing: 0.03em;
+padding: 63px 24px;
+}
 .product-box {
   padding: 20px 24px;
   border: 1px solid #eeeeee;
@@ -438,8 +566,11 @@ margin-right: 10px;
   flex-direction: column;
   font-size: 16px;
   line-height: calc(30 / 16);
+
+  transition: cubic-bezier(0.4, 0, 0.2, 1) 500ms;
 }
 .product-link:hover,
 .product-link:focus{
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.12), 0px 4px 4px rgba(0, 0, 0, 0.06), 1px 4px 6px rgba(0, 0, 0, 0.16);
 }
+
